@@ -1,11 +1,17 @@
 import socket
 from datetime import datetime
+import os
 
 def start_server(host='0.0.0.0', port=12345):
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server_socket.bind((host, port))
     server_socket.listen(5)
+    
+    save_folder = 'nesne'
+    if not os.path.exists(save_folder):
+        os.makedirs(save_folder)
+
     print(f"Listening on {host}:{port}")
 
     while True:
@@ -13,7 +19,7 @@ def start_server(host='0.0.0.0', port=12345):
         print(f"Connection from {addr}")
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f'received_image_{timestamp}.jpg'
+        filename = os.path.join(save_folder, f'received_image_{timestamp}.jpg')
 
         with open(filename, 'wb') as file:
             print(f"Receiving data for {filename}...")
@@ -26,3 +32,4 @@ def start_server(host='0.0.0.0', port=12345):
         client_socket.close()
 
 start_server()
+

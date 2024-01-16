@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./torch/hub/ultralytics_yolov5_master"
+    ]
+}
